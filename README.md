@@ -2,14 +2,10 @@
 ![](mathematics.jpeg)
 ## Project Description
 
-I will focus on training neural networks (NNs) to generate a difficult math problem. A dataset of difficult math problems can be found but not in the . Questions to discuss, 
-1. How are we going to measure difficulty particularly for this projects. Difficulty could be larger numbers? Difficulty could be problems with solutions that are ad hoc in nature? Moreover, our definition of difficulty will likely be limited by our dataset.
-2. We train the NN to generate a problem solution pair (same format as the dataset) 
-Regardless of the result of whether the result of this project is achieved, we will be able to get an insight into how to approach the task of generating the math problem. Such insight will be useful useful in cryptography and in decentralized computer systems that use cryptography e.g cryptocurrency and blockchain.
+This project will focus on training a neural network (NN) to generate a difficult math problem. In order to achieve this, we will need a dataset of math problems. Difficulty itself will need to be defined and its parameters determined i.e. does difficulty mean larger numbers? or problems with solutions that are ad hoc in nature? or perhaps the order in which the variables in the problem are introduced? These are all potential inputs to our neurons. Our definition of difficulty might be limited by our dataset. A dataset with problem-solution pairs will be used, and we will train the NN to generate ouput of the same format. 
 
-Further research could go into studying the corpus of mathematical terms and seeing which type of problems can 
-
+Regardless of the results acheieved in this project, we will be able to gain insight that is useful in cryptography, an important area for privacy and security.
 
 ## Project Goals
-1. Determine a measure of difficulty
-2. Train the NN to generate a difficult math problem by this standard of difficulty
+1. Determine our parameters of difficulty.
+2. Train the NN to generate a problem-solution pair that matches our standard of difficulty.
