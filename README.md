@@ -1,5 +1,5 @@
 # Title: Generating Hard Math Problems
-
+![](mathematics.png)
 ## Project Description
 
 I will focus on training neural networks (NNs) to generate a difficult math problem. A dataset of difficult math problems can be found but not in the . Questions to discuss, 
