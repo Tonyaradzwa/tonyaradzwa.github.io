@@ -4,14 +4,14 @@
 
 ## Project Description
 
-I will focus on training neural networks (NNs) for the task of navigating a simulated "maze". A robot will be placed in a simulated environment (similar to the image above) and the NN will direct the robot to follow turn-by-turn directions from a starting location to an ending location. The simulator already exists, but a new dataset will need to be created, either manually or using an automated process.
+I will focus on training neural networks (NNs) to generate a difficult math problem. A dataset of difficult math problems can be found but not in the . Questions to discuss, 
+1. How are we going to measure difficulty particularly for this projects. Difficulty could be larger numbers? Difficulty could be problems with solutions that are ad hoc in nature? Moreover, our definition of difficulty will likely be limited by our dataset.
+2. We train the NN to generate a problem solution pair (same format as the dataset) 
+Regardless of the result of whether the result of this project is achieved, we will be able to get an insight into how to approach the task of generating the math problem. Such insight will be useful useful in cryptography and in decentralized computer systems that use cryptography e.g cryptocurrency and blockchain.
 
-The trained NN will be "deployed" as an application by putting the NN in new, unseen environments and testing its performance. If all goes well, then an extension of this work will include changing the simulation textures and lighting and training the NN to work when facing unseen textures.
+Further research could go into studying the corpus of mathematical terms and seeing which type of problems can 
 
-The longer-term goal is to use a NN to enable better navigation in complex environments for a robot with multiple modes of locomotion (i.e., wheeled and flight). The results from this work will feed into an on-going project where we are trying to "cross the reality gap" that exists between simulation and the real world.
 
 ## Project Goals
-
-1. Create a dataset for training a NN for navigation.
-2. Explore methods for adding "noise" to the dataset.
-3. Train a NN that is able to navigate any procedurally generated maze.
+1. Determine a measure of difficulty
+2. Train the NN to generate a difficult math problem by this standard of difficulty
