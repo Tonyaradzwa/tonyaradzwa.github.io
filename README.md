@@ -1,4 +1,4 @@
-# Generating Hard Math Problems
+# Detecting Difficulty of Math Problems
 ![](mathematics.jpeg)
 
 ## Project Description
