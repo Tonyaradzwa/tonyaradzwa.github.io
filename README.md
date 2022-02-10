@@ -21,8 +21,11 @@ We have to deal with limited computing resources, which might potentially decrea
 
 We expect our model to perform with 70% accuracy averaged over all areas of mathon interpolation estimates and 60% on extrapolation estimates.  
 
-input: problem
-output: difficulty of problem
+## Dev Stages
+
+**stage 1:**
+  - input: problem
+  - output: difficulty of problem
 
 * where is data coming from
   * mathematics_dataset
@@ -33,9 +36,10 @@ interpolation: our test data
 
 extrapolation: other data
 
-stage 2:
+**stage 2:**
 
 input: difficulty level
+
 output: random question at that difficulty level with its solution
 
 ## Ethical Sweep
