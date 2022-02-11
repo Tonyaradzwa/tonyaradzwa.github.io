@@ -1,9 +1,8 @@
 # Detecting Difficulty of Math Problems
+**Members: Tonyaradzwa Chivandire, Salih Erdal**
 ![](mathematics.jpeg)
 
 ## Project Description
-
-**Members: Tonyaradzwa Chivandire, Salih Erdal**
 
 This project will focus on training a neural network (NN) to detect the difficulty level of a math problem and, in turn, generate its own difficult math problem. 
 
@@ -21,7 +20,7 @@ We expect our model to perform with 70% accuracy averaged over all areas of math
 
 ## Dev Stages
 
-**stage 1:**
+**Stage 1:**
   - input: problem
   - output: difficulty of problem
 
@@ -34,7 +33,7 @@ interpolation: our test data
 
 extrapolation: other data
 
-**stage 2:**
+**Stage 2:**
 
 input: difficulty level
 
