@@ -5,7 +5,7 @@
 
 **Members: Tonyaradzwa Chivandire, Salih Erdal**
 
-This project will focus on training a neural network (NN) to detect the difficulty level of a math problem. 
+This project will focus on training a neural network (NN) to detect the difficulty level of a math problem and from that generate its own math problem. 
 
 ## Introduction
 
