@@ -5,13 +5,13 @@
 
 **Members: Tonyaradzwa Chivandire, Salih Erdal**
 
-This project will focus on training a neural network (NN) to detect the difficulty level of a math problem and from that generate its own math problem. 
+This project will focus on training a neural network (NN) to detect the difficulty level of a math problem and, in turn, generate its own difficult math problem. 
 
 ## Introduction
 
-Can a computer learn to identify the difficulty level of a math problem? This question motivates our study, and we seek to explore computers' problem solving abilities in different areas of math by utilizing neural network architectures.
+Can a computer learn to identify the difficulty level of a math problem? This question motivates our study, and we seek to explore the computer's ability to determine the difficulty of problems in different areas of math and its ability to generate its own difficult problem by utilizing neural network architectures.
 
-The difficulty in teaching computers is that solving difficult problems could require immense calculation or many complex ad-hoc strategies applied in a certain order. Such parameters, are potential inputs to our neurons. 
+The difficulty in teaching computers to detect difficulty is identifying what makes the problems difficult—problems could require immense calculation or many complex ad-hoc strategies applied in a certain order. Such parameters, are potential inputs to our neurons. 
 
 Our approach will combine the strengths of previous approaches that train a computer to solve math problems.
 
@@ -26,7 +26,7 @@ We expect our model to perform with 70% accuracy averaged over all areas of math
   - output: difficulty of problem
 
 * where is data coming from
-  * mathematics_dataset
+  * https://github.com/deepmind/mathematics_dataset
 * how will we label training data?
   * they are already labeled
 
