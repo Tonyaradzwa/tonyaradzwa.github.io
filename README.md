@@ -5,17 +5,15 @@
 
 **Members: Tonyaradzwa Chivandire, Salih Erdal**
 
-This project will focus on training a neural network (NN) to generate a difficult math problem. In order to achieve this, we will need a dataset of math problems. Difficulty itself will need to be defined and its parameters determined i.e. does difficulty mean larger numbers? or problems with solutions that are ad hoc in nature? or perhaps the order in which the variables in the problem are introduced? These are all potential inputs to our neurons. Our definition of difficulty might be limited by our dataset. A dataset with problem-solution pairs will be used, and we will train the NN to generate ouput of the same format. 
-
-Regardless of the results acheieved in this project, we will be able to gain insight that is useful in cryptography, an important area for privacy and security.
+This project will focus on training a neural network (NN) to detect the difficulty level of a math problem. 
 
 ## Introduction
 
-Can computers learn to solve math problems? This question motivates our study, and we seek to explore computers' problem solving abilities in different areas of math by utilizing neural network architectures.
+Can a computer learn to identify the difficulty level of a math problem? This question motivates our study, and we seek to explore computers' problem solving abilities in different areas of math by utilizing neural network architectures.
 
-The difficulty of teaching computers how to solve problems relies mainly on the fact that solving problems requires many complex ad-hoc strategies applied in a certain order. 
+The difficulty in teaching computers is that solving difficult problems could require immense calculation or many complex ad-hoc strategies applied in a certain order. Such parameters, are potential inputs to our neurons. 
 
-Our approach will combine the strengths of previous approaches.
+Our approach will combine the strengths of previous approaches that train a computer to solve math problems.
 
 We have to deal with limited computing resources, which might potentially decrease the accuracy of our model by affecting the size of our training data set.
 
