@@ -16,7 +16,19 @@ Our approach will combine the strengths of previous approaches that train a comp
 
 We have to deal with limited computing resources, which might potentially decrease the accuracy of our model by affecting the size of our training data set.
 
-We expect our model to perform with 70% accuracy averaged over all areas of mathon interpolation estimates and 60% on extrapolation estimates.  
+We expect our model to perform with 70% accuracy averaged over all areas of mathon interpolation estimates and 60% on extrapolation estimates. 
+
+## Related Works
+[**Text2Math: End-to-end Parsing Text into Math Expressions**](https://arxiv.org/abs/1910.06571)
+(Yanyan Zou, Wei Lu. 2019)
+
+Semantic parsing and solving of arithmetic word problems and equations, using end-to-end parsing. The model achieved up to 86.5 % accuracy for arithmetic word problems and up to 74.5% accuracy for equation parsing.
+
+[**Using neural networks to solve advanced mathematics equations**](https://ai.facebook.com/blog/using-neural-networks-to-solve-advanced-mathematics-equations/)
+(Facebook AI Blog)
+
+Training a neural network to solve advanced math equations using seq2seq transformer model and a dataset of millions of math problems (problem-solution pairs). The model was very accurate, achieving 99.7% percent accuracy in solving integration problems.
+
 
 ## Dev Stages
 
