@@ -29,6 +29,13 @@ Semantic parsing and solving of arithmetic word problems and equations, using en
 
 Training a neural network to solve advanced math equations using seq2seq transformer model and a dataset of millions of math problems (problem-solution pairs). The model was very accurate, achieving 99.7% percent accuracy in solving integration problems.
 
+[**ANALYSING MATHEMATICAL REASONING ABILITIES OF NEURAL MODELS**](https://openreview.net/pdf?id=H1gR5iR5FX) (David Saxton et al.. 2019)
+
+This paper examines the capability of some Neural Network models with sequence-to-sequence architectures in developing mathematical reasoning abilities in order to solve high school difficulty math problems. The paper discusses how data(problem-solution pairs) was generated synthetically and notes the models were trained with free form textual input/output form, and compares the performance of these models.
+
+[**Solving Math Equations with Neural Networks**](https://ai.plainenglish.io/solving-math-equations-with-neural-networks-f015351995e8)(Blog post)
+
+This blog post shows a simple implementation of a recurrent neural network which learns the symbolic representation of numbers and algebraic operations. The model takes as input simple arithmetic math operations as strings. This source could be useful as a starting point for implementing a similar architecture with our own data.
 
 ## Dev Stages
 
