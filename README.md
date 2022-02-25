@@ -4,19 +4,19 @@
 
 ## Project Description
 
-This project will focus on training a neural network (NN) to detect the difficulty level of a math problem and, in turn, generate its own difficult math problem. 
+This project will focus on training a neural network (NN) to solve math problems that are given in text form. 
 
 ## Introduction
 
-Can a computer learn to identify the difficulty level of a math problem? This question motivates our study, and we seek to explore the computer's ability to determine the difficulty of problems in different areas of math and its ability to generate its own difficult problem by utilizing neural network architectures.
+Can a computer learn to solve math problems? This question motivates our study, and we seek to explore computers' problem solving abilities in different areas of math by utilizing neural network architectures, e.g Recurrent NNs.
 
-The difficulty in teaching computers to detect difficulty is identifying what makes the problems difficult—problems could require immense calculation or many complex ad-hoc strategies applied in a certain order. Such parameters, are potential inputs to our neurons. 
+The difficulty in teaching computers how to solve problems relies mainly on the fact that computers cannot "digest" a problem the same way that humans do. When humans encounter problems, they extract relevant info from what they are given, and they understand what they are being asked and they form steps to arrive at what they are asked by using methods that are not immediate in the questions. All these steps together can be called mathematical reasoning. So, the question of whether computers can learn mathematical reasoning forms the basis of our inquiry. 
 
-Our approach will combine the strengths of previous approaches that train a computer to solve math problems.
+Our approach will try to implement methods that have previously been tried and synthesize our own intuitions to arrive at better scores.
 
 We have to deal with limited computing resources, which might potentially decrease the accuracy of our model by affecting the size of our training data set.
 
-We expect our model to perform with 70% accuracy averaged over all areas of mathon interpolation estimates and 60% on extrapolation estimates. 
+We expect our model to perform with 70% accuracy averaged over all areas of math on interpolation estimates and 60% on extrapolation estimates. 
 
 ## Related Works
 [**Text2Math: End-to-end Parsing Text into Math Expressions**](https://arxiv.org/abs/1910.06571)
@@ -37,27 +37,19 @@ This paper examines the capability of some Neural Network models with sequence-t
 
 This blog post shows a simple implementation of a recurrent neural network which learns the symbolic representation of numbers and algebraic operations. The model takes as input simple arithmetic math operations as strings. This source could be useful as a starting point for implementing a similar architecture with our own data.
 
-## Dev Stages
+## Development Ideas
 
-**Stage 1:**
-  - input: problem
-  - output: difficulty of problem
-
-* where is data coming from
+where is data coming from?
   * https://github.com/deepmind/mathematics_dataset
-* how will we label training data?
-  * they are already labeled
+how will we label training data?
+  * each question is already labeled with an answer.
 
-interpolation: our test data
+interpolation: our synthetic test data
+extrapolation: questions from real sources
 
-extrapolation: other data
-
-**Stage 2:**
-
-input: difficulty level
-
-output: random question at that difficulty level with its solution
-
+what neural network architectures will we use?
+  * we will try LSTM and sequence to sequence.
+  
 ## Ethical Sweep
 
-The model that we will be training may be used for good purposes, such as generating problems appropriate to the level of a student who needs more practice on some types of questions, and evaluating the student's answer. If our model or future work can find solutions to problems that are not easily solvable by humans, it might lead to further discussions about the nature of some problems.  
+The model that we will be training may be used for good purposes, such as checking automatically if a student got the right answer in a question. If our model or future work can find solutions to problems that are not easily solvable by humans, it might lead to further discussions about the nature of some problems.  
