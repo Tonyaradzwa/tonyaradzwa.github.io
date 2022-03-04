@@ -1,4 +1,4 @@
-# Detecting Difficulty of Math Problems
+# Solving Difficult Math Problems
 **Members: Tonyaradzwa Chivandire, Salih Erdal**
 ![](mathematics.jpeg)
 
