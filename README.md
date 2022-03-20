@@ -1,4 +1,4 @@
-# Detecting Difficulty of Math Problems
+# Solving Difficult Math Problems
 **Members: Tonyaradzwa Chivandire, Salih Erdal**
 ![](mathematics.jpeg)
 
@@ -8,15 +8,11 @@ This project will focus on training a neural network (NN) to solve math problems
 
 ## Introduction
 
-Can a computer learn to solve math problems? This question motivates our study, and we seek to explore computers' problem solving abilities in different areas of math by utilizing neural network architectures, e.g Recurrent NNs.
+Can a computer learn to solve math problems? This question motivates our study, and we seek to explore computers' problem-solving abilities in different areas of math by utilizing neural network architectures, e.g Recurrent NNs. 
 
-The difficulty in teaching computers how to solve problems relies mainly on the fact that computers cannot "digest" a problem the same way that humans do. When humans encounter problems, they extract relevant info from what they are given, and they understand what they are being asked and they form steps to arrive at what they are asked by using methods that are not immediate in the questions. All these steps together can be called mathematical reasoning. So, the question of whether computers can learn mathematical reasoning forms the basis of our inquiry. 
+The difficulty in teaching computers how to solve problems lies mainly in the fact that computers cannot "digest" a problem in the same way that humans do. When humans encounter problems, they extract the relevant information from what they are given; they decipher the pragmatic meaning of the terms to identify what the question is asking and apply a sequence of steps to arrive at a solution by using techniques that are not immediate in the questions. This is called mathematical reasoning, and whether computers can learn mathematical reasoning forms the basis of our inquiry. 
 
-Our approach will try to implement methods that have previously been tried and synthesize our own intuitions to arrive at better scores.
-
-We have to deal with limited computing resources, which might potentially decrease the accuracy of our model by affecting the size of our training data set.
-
-We expect our model to perform with 70% accuracy averaged over all areas of math on interpolation estimates and 60% on extrapolation estimates. 
+One approach to developing computers' mathematical reasoning abilities (Saxton et. al, 2019) uses sequence-to-sequence NN to solve difficult high school level math problems. The study used a dataset of problem-solution pairs in free form textual input/output form and the performances of the different models were compared. Our approach will implement similar methods while synthesizing our own intuitions to arrive at better scores. We will use embeddings to parse the input and an LSTM as our NN. We have to deal with limited computing resources, and we expect the size of our training dataset to potentially decrease the accuracy of our model. Minimally, we expect our model to perform with 70% accuracy averaged over all areas of math on interpolation estimates and 60% on extrapolation estimates.
 
 ## Related Works
 [**Text2Math: End-to-end Parsing Text into Math Expressions**](https://arxiv.org/abs/1910.06571)
