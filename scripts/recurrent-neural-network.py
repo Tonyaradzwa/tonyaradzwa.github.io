@@ -42,7 +42,8 @@
 # %%
 def ps(s):
     """Process String: convert a string into a list of lowercased words."""
-    return s.lower().split()
+    line = s.strip().replace(' ', '')
+    return [c for c in line]
 
 
 # %%
@@ -59,12 +60,18 @@ f = open(FILEPATH, "r")
 # answers = [ [] ]
 
 for i in range(5000):
-    line = f.readline().strip().replace(' ', '')
-    # a question
-    if i % 2 == 0:
-        questions.append([c for c in line])
-    else:
-        answers.append([c for c in line])
+    line_q = f.readline().strip().replace(' ', '')
+    line_a = f.readline().strip().replace(' ', '')
+    
+    line_q_list = [c for c in line_q]
+    line_a_list = [c for c in line_a]
+    
+    for i in range(len(line_q_list) - len(line_a_list)):
+        line_a_list.insert(0, "0")
+        
+    questions.append(line_q_list)
+    answers.append(line_a_list)
+    
 f.close()
     
 # use zip to create dataset object
@@ -94,8 +101,6 @@ total_tags = 0
 tag_list = []
 
 for words, tags in dataset:
-
-    assert len(words) == len(tags)
 
     total_words += len(words)
 
@@ -155,7 +160,7 @@ embed_layer = torch.nn.Embedding(vocab_size, embed_dim)
 
 # %%
 # i = torch.tensor([word_to_index["the"], word_to_index["dog"]])
-indices = convert_to_index_tensor(ps("The dog ate the apple"), word_to_index)
+indices = convert_to_index_tensor(ps("15 + (7 + -17)/12"), word_to_index)
 embed_output = embed_layer(indices)
 indices.shape, embed_output.shape, embed_output
 
@@ -214,7 +219,7 @@ hidden_dim = 8  # Size of LSTM internal state
 num_layers = 5  # Number of LSTM layers
 
 learning_rate = 0.1
-num_epochs = 500
+num_epochs = 2
 
 # %% [markdown]
 # ## Creating training and validation datasets
@@ -294,9 +299,8 @@ for epoch in mb:
     model.train()
 
     for sentence, tags in progress_bar(train_dataset, parent=mb):
-
         model.zero_grad()
-
+        
         sentence = convert_to_index_tensor(sentence, word_to_index)
         tags = convert_to_index_tensor(tags, tag_to_index)
 
@@ -334,10 +338,10 @@ with torch.no_grad():
 # ## Using the model for inference
 
 # %%
-new_sentence = "I is a teeth"
+new_sentence = "3 + 3"
 
 # Convert sentence to lowercase words
-sentence = new_sentence.lower().split()
+sentence = ps(new_sentence)
 
 # Check that each word is in our vocabulary
 for word in sentence:
@@ -351,7 +355,7 @@ predictions = model(sentence)
 predictions = predictions.squeeze().argmax(dim=1)
 
 # Print results
-for word, tag in zip(new_sentence.split(), predictions):
+for word, tag in zip(ps(new_sentence), predictions):
     print(word, "=>", tag_list[tag.item()])
 
 # %% [markdown]
@@ -360,5 +364,9 @@ for word, tag in zip(new_sentence.split(), predictions):
 # - compare with fully connected network
 # - compare with CNN
 # - compare with transformer
+
+# %%
+
+# %%
 
 # %%
