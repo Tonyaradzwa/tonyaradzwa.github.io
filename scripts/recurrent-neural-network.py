@@ -13,6 +13,10 @@
 #     name: python3
 # ---
 
+# %% [markdown] toc=true
+# <h1>Table of Contents<span class="tocSkip"></span></h1>
+# <div class="toc"><ul class="toc-item"><li><span><a href="#Preparing-data-for-use-as-NN-input" data-toc-modified-id="Preparing-data-for-use-as-NN-input-1"><span class="toc-item-num">1&nbsp;&nbsp;</span>Preparing data for use as NN input</a></span></li><li><span><a href="#Letting-the-NN-parameterize-words" data-toc-modified-id="Letting-the-NN-parameterize-words-2"><span class="toc-item-num">2&nbsp;&nbsp;</span>Letting the NN parameterize words</a></span></li><li><span><a href="#Adding-an-LSTM-layer" data-toc-modified-id="Adding-an-LSTM-layer-3"><span class="toc-item-num">3&nbsp;&nbsp;</span>Adding an LSTM layer</a></span></li><li><span><a href="#Classifiying-the-LSTM-output" data-toc-modified-id="Classifiying-the-LSTM-output-4"><span class="toc-item-num">4&nbsp;&nbsp;</span>Classifiying the LSTM output</a></span></li><li><span><a href="#Creating-training-and-validation-datasets" data-toc-modified-id="Creating-training-and-validation-datasets-5"><span class="toc-item-num">5&nbsp;&nbsp;</span>Creating training and validation datasets</a></span></li><li><span><a href="#Creating-the-Parts-of-Speech-LSTM-model" data-toc-modified-id="Creating-the-Parts-of-Speech-LSTM-model-6"><span class="toc-item-num">6&nbsp;&nbsp;</span>Creating the Parts of Speech LSTM model</a></span></li><li><span><a href="#Training" data-toc-modified-id="Training-7"><span class="toc-item-num">7&nbsp;&nbsp;</span>Training</a></span></li><li><span><a href="#Examining-results" data-toc-modified-id="Examining-results-8"><span class="toc-item-num">8&nbsp;&nbsp;</span>Examining results</a></span></li><li><span><a href="#Using-the-model-for-inference" data-toc-modified-id="Using-the-model-for-inference-9"><span class="toc-item-num">9&nbsp;&nbsp;</span>Using the model for inference</a></span></li></ul></div>
+
 # %% [markdown]
 # # Predicting parts of speech with an LSTM
 #
@@ -42,38 +46,32 @@
 # %%
 def ps(s):
     """Process String: convert a string into a list of lowercased words."""
-    line = s.strip().replace(' ', '')
+    line = s.strip().replace(" ", "")
     return [c for c in line]
 
 
 # %%
-import os
+from pathlib import Path
+import re
 
 # read quesitons and answers from file
-FILEPATH = os.path.expanduser('~') + "/tonyaradzwa.github.io/train_data/arithmetic__mixed.txt"
+dataset_filename = Path("../train_data/arithmetic__mixed.txt")
 
+# questions = [ ["1", "+" , "3"], ... ]
 questions = []
-answers = []
-f = open(FILEPATH, "r")
 
-# questions = [ ["1", "+" , "3"], ... ] 
 # answers = [ [] ]
+answers = []
 
-for i in range(5000):
-    line_q = f.readline().strip().replace(' ', '')
-    line_a = f.readline().strip().replace(' ', '')
-    
-    line_q_list = [c for c in line_q]
-    line_a_list = [c for c in line_a]
-    
-    for i in range(len(line_q_list) - len(line_a_list)):
-        line_a_list.insert(0, "0")
-        
-    questions.append(line_q_list)
-    answers.append(line_a_list)
-    
-f.close()
-    
+with open(dataset_filename) as dataset_file:
+    # Grabbing a subset of the entire file
+    for i in range(100):
+        line_q = dataset_file.readline().strip()
+        line_a = dataset_file.readline().strip()
+
+        questions.append([word.strip() for word in re.split(r'([+-/*()]|\s+)', line_q) if word.strip()])
+        answers.append(eval(line_a))
+
 # use zip to create dataset object
 dataset = [(q,a) for q,a in zip(questions,answers)]
 
@@ -93,27 +91,15 @@ from random import shuffle
 
 # %%
 word_to_index = {}
-tag_to_index = {}
-
 total_words = 0
-total_tags = 0
 
-tag_list = []
+for question, _ in dataset:
 
-for words, tags in dataset:
+    total_words += len(question)
 
-    total_words += len(words)
-
-    for word in words:
+    for word in question:
         if word not in word_to_index:
             word_to_index[word] = len(word_to_index)
-
-    total_tags += len(tags)
-
-    for tag in tags:
-        if tag not in tag_to_index:
-            tag_to_index[tag] = len(tag_to_index)
-            tag_list.append(tag)
 
 # %%
 print("       Vocabulary Indices")
@@ -124,16 +110,6 @@ for word in sorted(word_to_index):
 
 print("\nTotal number of words:", total_words)
 print("Number of unique words:", len(word_to_index))
-
-# %%
-print("Tag Indices")
-print("-----------")
-
-for tag, index in tag_to_index.items():
-    print(f"  {tag} => {index}")
-
-print("\nTotal number of tags:", total_tags)
-print("Number of unique tags:", len(tag_to_index))
 
 
 # %% [markdown]
@@ -200,8 +176,7 @@ lstm_output.shape
 # **Linear layer input and output**. The input is expected to be (input_size, output_size) and the output will be the output of each neuron.
 
 # %%
-tag_size = len(tag_to_index)
-linear_layer = torch.nn.Linear(hidden_dim, tag_size)
+linear_layer = torch.nn.Linear(hidden_dim, 1)
 
 # %%
 linear_output = linear_layer(lstm_output)
@@ -227,7 +202,6 @@ num_epochs = 2
 # %%
 N = len(dataset)
 vocab_size = len(word_to_index)  # Number of unique input words
-tag_size = len(tag_to_index)  # Number of unique output targets
 
 # Shuffle the data so that we can split the dataset randomly
 shuffle(dataset)
@@ -246,11 +220,11 @@ len(valid_dataset), len(train_dataset)
 class POS_LSTM(torch.nn.Module):
     """Part of Speach LSTM model."""
 
-    def __init__(self, vocab_size, embed_dim, hidden_dim, num_layers, tag_size):
+    def __init__(self, vocab_size, embed_dim, hidden_dim, num_layers):
         super().__init__()
         self.embed = torch.nn.Embedding(vocab_size, embed_dim)
         self.lstm = torch.nn.LSTM(embed_dim, hidden_dim, num_layers=num_layers)
-        self.linear = torch.nn.Linear(hidden_dim, tag_size)
+        self.linear = torch.nn.Linear(hidden_dim, 1)
 
     def forward(self, X):
         X = self.embed(X)
@@ -281,15 +255,15 @@ def compute_accuracy(dataset):
 
 
 # %%
-model = POS_LSTM(vocab_size, embed_dim, hidden_dim, num_layers, tag_size)
+model = POS_LSTM(vocab_size, embed_dim, hidden_dim, num_layers)
 
 criterion = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
 mb = master_bar(range(num_epochs))
 
-accuracy = compute_accuracy(valid_dataset)
-print(f"Validation accuracy before training : {accuracy * 100:.2f}%")
+# accuracy = compute_accuracy(valid_dataset)
+# print(f"Validation accuracy before training : {accuracy * 100:.2f}%")
 
 for epoch in mb:
 
@@ -302,17 +276,18 @@ for epoch in mb:
         model.zero_grad()
         
         sentence = convert_to_index_tensor(sentence, word_to_index)
-        tags = convert_to_index_tensor(tags, tag_to_index)
+#         tags = convert_to_index_tensor(tags, tag_to_index)
 
         tag_scores = model(sentence)
 
-        loss = criterion(tag_scores.squeeze(), tags)
+        break
+#         loss = criterion(tag_scores.squeeze(), tags)
 
-        loss.backward()
-        optimizer.step()
+#         loss.backward()
+#         optimizer.step()
 
-accuracy = compute_accuracy(valid_dataset)
-print(f"Validation accuracy after training : {accuracy * 100:.2f}%")
+# accuracy = compute_accuracy(valid_dataset)
+# print(f"Validation accuracy after training : {accuracy * 100:.2f}%")
 
 # %% [markdown]
 # ## Examining results
