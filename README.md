@@ -22,15 +22,18 @@ After completing our research and training our model, we hope to be able to get 
 
 ## Methods
 
-where is data coming from?
-  * https://github.com/deepmind/mathematics_dataset
+#### Prepare the Dataset
+* We will use a [dataset](https://github.com/deepmind/mathematics_dataset) containing millions of problem solution pairs for different math modules. We will start by training our NN on one simple module (Arithmetic) then on other more difficult modules.
 
-what neural network architectures will we use?
-  * we will try LSTM and sequence to sequence.
+#### Create embeddings
+* Create and save embeddings for our NN to read the data.
 
-input type and shape:
+#### Train the Neural Network
+* Create an LSTM Layer to train the model. 
+* Train the model on multiple math modules.
 
-output type and shape:
+#### Optimization
+* Look into optimization techniques e.g. Adam to improve accuracy
   
 ## Ethical Sweep
 
