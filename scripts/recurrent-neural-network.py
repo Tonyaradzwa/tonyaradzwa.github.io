@@ -42,37 +42,27 @@
 # %%
 def ps(s):
     """Process String: convert a string into a list of lowercased words."""
-    line = s.strip().replace(' ', '')
-    return [c for c in line]
+    return [word.strip() for word in re.split(r'([+-/*()?]|\s+)', s) if word.strip()]
 
 
 # %%
-import os
+from pathlib import Path
+import re
 
 # read quesitons and answers from file
-FILEPATH = os.path.expanduser('~') + "/tonyaradzwa.github.io/train_data/arithmetic__mixed.txt"
+dataset_filename = Path("../train_data/arithmetic__mixed.txt")
 
 questions = []
 answers = []
-f = open(FILEPATH, "r")
 
-# questions = [ ["1", "+" , "3"], ... ] 
-# answers = [ [] ]
+with open(dataset_filename) as dataset_file:
+    # Grabbing a subset of the entire file
+    for i in range(100):
+        line_q = dataset_file.readline().strip()
+        line_a = dataset_file.readline().strip()
 
-for i in range(5000):
-    line_q = f.readline().strip().replace(' ', '')
-    line_a = f.readline().strip().replace(' ', '')
-    
-    line_q_list = [c for c in line_q]
-    line_a_list = [c for c in line_a]
-    
-    for i in range(len(line_q_list) - len(line_a_list)):
-        line_a_list.insert(0, "0")
-        
-    questions.append(line_q_list)
-    answers.append(line_a_list)
-    
-f.close()
+        questions.append(ps(line_q))
+        answers.append(eval(line_a))
     
 # use zip to create dataset object
 dataset = [(q,a) for q,a in zip(questions,answers)]
@@ -93,27 +83,17 @@ from random import shuffle
 
 # %%
 word_to_index = {}
-tag_to_index = {}
 
 total_words = 0
-total_tags = 0
 
-tag_list = []
 
-for words, tags in dataset:
+for question, _ in dataset:
 
-    total_words += len(words)
+    total_words += len(question)
 
-    for word in words:
+    for word in question:
         if word not in word_to_index:
             word_to_index[word] = len(word_to_index)
-
-    total_tags += len(tags)
-
-    for tag in tags:
-        if tag not in tag_to_index:
-            tag_to_index[tag] = len(tag_to_index)
-            tag_list.append(tag)
 
 # %%
 print("       Vocabulary Indices")
@@ -124,16 +104,6 @@ for word in sorted(word_to_index):
 
 print("\nTotal number of words:", total_words)
 print("Number of unique words:", len(word_to_index))
-
-# %%
-print("Tag Indices")
-print("-----------")
-
-for tag, index in tag_to_index.items():
-    print(f"  {tag} => {index}")
-
-print("\nTotal number of tags:", total_tags)
-print("Number of unique tags:", len(tag_to_index))
 
 
 # %% [markdown]
@@ -160,7 +130,7 @@ embed_layer = torch.nn.Embedding(vocab_size, embed_dim)
 
 # %%
 # i = torch.tensor([word_to_index["the"], word_to_index["dog"]])
-indices = convert_to_index_tensor(ps("15 + (7 + -17)/12"), word_to_index)
+indices = convert_to_index_tensor(ps("15 + (7 + -17)"), word_to_index)
 embed_output = embed_layer(indices)
 indices.shape, embed_output.shape, embed_output
 
@@ -200,8 +170,7 @@ lstm_output.shape
 # **Linear layer input and output**. The input is expected to be (input_size, output_size) and the output will be the output of each neuron.
 
 # %%
-tag_size = len(tag_to_index)
-linear_layer = torch.nn.Linear(hidden_dim, tag_size)
+linear_layer = torch.nn.Linear(hidden_dim, 1)
 
 # %%
 linear_output = linear_layer(lstm_output)
@@ -227,7 +196,6 @@ num_epochs = 2
 # %%
 N = len(dataset)
 vocab_size = len(word_to_index)  # Number of unique input words
-tag_size = len(tag_to_index)  # Number of unique output targets
 
 # Shuffle the data so that we can split the dataset randomly
 shuffle(dataset)
@@ -246,11 +214,11 @@ len(valid_dataset), len(train_dataset)
 class POS_LSTM(torch.nn.Module):
     """Part of Speach LSTM model."""
 
-    def __init__(self, vocab_size, embed_dim, hidden_dim, num_layers, tag_size):
+    def __init__(self, vocab_size, embed_dim, hidden_dim, num_layers):
         super().__init__()
         self.embed = torch.nn.Embedding(vocab_size, embed_dim)
         self.lstm = torch.nn.LSTM(embed_dim, hidden_dim, num_layers=num_layers)
-        self.linear = torch.nn.Linear(hidden_dim, tag_size)
+        self.linear = torch.nn.Linear(hidden_dim, 1)
 
     def forward(self, X):
         X = self.embed(X)
@@ -281,15 +249,15 @@ def compute_accuracy(dataset):
 
 
 # %%
-model = POS_LSTM(vocab_size, embed_dim, hidden_dim, num_layers, tag_size)
+model = POS_LSTM(vocab_size, embed_dim, hidden_dim, num_layers)
 
 criterion = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
 mb = master_bar(range(num_epochs))
 
-accuracy = compute_accuracy(valid_dataset)
-print(f"Validation accuracy before training : {accuracy * 100:.2f}%")
+# accuracy = compute_accuracy(valid_dataset)
+# print(f"Validation accuracy before training : {accuracy * 100:.2f}%")
 
 for epoch in mb:
 
@@ -298,21 +266,22 @@ for epoch in mb:
 
     model.train()
 
-    for sentence, tags in progress_bar(train_dataset, parent=mb):
+    for sentence, answer in progress_bar(train_dataset, parent=mb):
         model.zero_grad()
         
         sentence = convert_to_index_tensor(sentence, word_to_index)
-        tags = convert_to_index_tensor(tags, tag_to_index)
 
-        tag_scores = model(sentence)
+        predict = model(sentence)
+        
+        print(predict[-1].shape)
+        print(torch.tensor([answer], dtype=torch.float).shape)
+        loss = criterion(predict[-1].squeeze(), torch.tensor([answer], dtype=torch.float))
 
-        loss = criterion(tag_scores.squeeze(), tags)
+        #loss.backward()
+        #optimizer.step()
 
-        loss.backward()
-        optimizer.step()
-
-accuracy = compute_accuracy(valid_dataset)
-print(f"Validation accuracy after training : {accuracy * 100:.2f}%")
+#accuracy = compute_accuracy(valid_dataset)
+#print(f"Validation accuracy after training : {accuracy * 100:.2f}%")
 
 # %% [markdown]
 # ## Examining results
