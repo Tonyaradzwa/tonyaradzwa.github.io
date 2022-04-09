@@ -34,7 +34,11 @@ After completing our research and training our model, we hope to be able to get 
 
 #### Optimization
 * Look into optimization techniques e.g. Adam to improve accuracy
-  
+
+## Discussion
+
+Our model was first trained to solve problems in individual modules. The highest accuracy was obtained in the Arithmetic module (X%) and the lowest in Probability (X%). When trained on all modules in the data set, our model performed with an accuracy of (X%). Our model was also trained on different hyper parameters and optimization functions. The highest accuracy achieved across all math modules (X%) was obtained using Adam optimizer, X hidden layers, a learning rate of X, and embedding dimension of X. Overall, our model performed relatively well, and was slightly lower than Saxton et al. (X%). 
+
 ## Ethical Sweep
 
 The model that we will be training may be used for good purposes, such as checking automatically if a student got the right answer in a question. If our model or future work can find solutions to problems that are not easily solvable by humans, it might lead to further discussions about the nature of some problems.  
