@@ -13,32 +13,6 @@
 #     name: python3
 # ---
 
-# %% [markdown]
-# # Predicting parts of speech with an LSTM
-#
-# Let's preview the end result. We want to take a sentence and output the part of speech for each word in that sentence. Something like this:
-#
-# **Code**
-#
-# ```python
-# new_sentence = "I is a teeth"
-#
-# ...
-#
-# predictions = model(processed_sentence)
-#
-# ...
-# ```
-#
-# **Output**
-#
-# ```text
-# I     => Noun
-# is    => Verb
-# a     => Determiner
-# teeth => Noun
-# ```
-
 # %%
 def ps(s):
     """Process String: convert a string into a list of lowercased words."""
@@ -57,7 +31,7 @@ answers = []
 
 with open(dataset_filename) as dataset_file:
     # Grabbing a subset of the entire file
-    for i in range(100):
+    for i in range(100000):
         line_q = dataset_file.readline().strip()
         line_a = dataset_file.readline().strip()
 
@@ -251,7 +225,7 @@ def compute_accuracy(dataset):
 # %%
 model = POS_LSTM(vocab_size, embed_dim, hidden_dim, num_layers)
 
-criterion = torch.nn.CrossEntropyLoss()
+criterion = torch.nn.MSELoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
 mb = master_bar(range(num_epochs))
@@ -273,12 +247,9 @@ for epoch in mb:
 
         predict = model(sentence)
         
-        print(predict[-1].shape)
-        print(torch.tensor([answer], dtype=torch.float).shape)
-        loss = criterion(predict[-1].squeeze(), torch.tensor([answer], dtype=torch.float))
-
-        #loss.backward()
-        #optimizer.step()
+        loss = criterion(predict[-1][0], torch.tensor([answer], dtype=torch.float))
+        loss.backward()
+        optimizer.step()
 
 #accuracy = compute_accuracy(valid_dataset)
 #print(f"Validation accuracy after training : {accuracy * 100:.2f}%")
@@ -295,13 +266,10 @@ print(header)
 print("-" * len(header))
 
 with torch.no_grad():
-    for sentence, tags in dataset:
+    for sentence, answer in dataset:
         sentence_indices = convert_to_index_tensor(sentence, word_to_index)
-        tag_scores = model(sentence_indices)
-        predictions = tag_scores.squeeze().argmax(dim=1)
-        for word, tag, pred in zip(sentence, tags, predictions):
-            if tag != tag_list[pred]:
-                print(f"{word:>14} |     {tag}    |    {tag_list[pred]}")
+        pred = model(sentence_indices)[-1]
+        print(pred, answer)
 
 # %% [markdown]
 # ## Using the model for inference
