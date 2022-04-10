@@ -39,16 +39,19 @@ After completing our research and training our model, we hope to be able to get 
 
 We tried several configurations of our model for this task. The base model we built was an LSTM layer connected to a Linear Layer that produced a single integer output.  We first tried this model to solve problems in the arithmetic module. In our first training setup, we used stochastic gradient descent with MSE as our loss function. The initial hyparameters and setup of our network is given as a table below
 
-------------------------------------------------------------------------------------------
-Hyperparameters                              |         Setup 
-------------------------------------------------------------------------------------------
-X hidden states for LSTM,                    |    X optimization function
-X connected layers                           |    SGD
-0.X learning rate                            |    MSE Loss
+| Hyperparameters                              |         Setup                          |
+| :---:                                        | :---:                                  |
+| X hidden states for LSTM,                    |    X optimization function             |
+| X connected layers                           |    SGD                                 |
+| 0.X learning rate                            |    MSE Loss                            |
 
 This didn't give us desired results, so we tried training our model on different hyper parameters and optimization functions. The highest accuracy achieved in this module (X%) was obtained with the following combination of hyperparameters and setup: 
 
---- Put another table ----
+| Hyperparameters                              |         Setup                          |
+| :---:                                        | :---:                                  |
+| X hidden states for LSTM,                    |    X optimization function             |
+| X connected layers                           |    X descent function                  |
+| 0.X learning rate                            |    X Loss function                     |
 
 These results are not surprising, since we expected accuracy to increase as we increased X,Y,Z and decreased X,Y,Z because we have seen in our initial configuration that X.  
 
