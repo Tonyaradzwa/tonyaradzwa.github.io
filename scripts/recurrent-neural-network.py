@@ -26,6 +26,7 @@ import re
 # read quesitons and answers from file
 dataset_filename = Path("../train_data/arithmetic__mixed.txt")
 
+# q,a lists
 questions = []
 answers = []
 
