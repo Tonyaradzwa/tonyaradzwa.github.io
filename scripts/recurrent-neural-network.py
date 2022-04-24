@@ -16,12 +16,13 @@
 # %%
 def ps(s):
     """Process String: convert a string into a list of lowercased words."""
-    return [word.strip() for word in re.split(r'([+-/*()?]|\s+)', s) if word.strip()]
+    return [word.strip() for word in re.split(r'([+-/*()?]|\s+|\d)', s) if word.strip()]
 
 
 # %%
 from pathlib import Path
 import re
+import numpy as np
 
 # read quesitons and answers from file
 dataset_filename = Path("../train_data/arithmetic__mixed.txt")
@@ -32,7 +33,7 @@ answers = []
 
 with open(dataset_filename) as dataset_file:
     # Grabbing a subset of the entire file
-    for i in range(100000):
+    for i in range(1000):
         line_q = dataset_file.readline().strip()
         line_a = dataset_file.readline().strip()
 
@@ -61,7 +62,6 @@ word_to_index = {}
 
 total_words = 0
 
-
 for question, _ in dataset:
 
     total_words += len(question)
@@ -69,6 +69,11 @@ for question, _ in dataset:
     for word in question:
         if word not in word_to_index:
             word_to_index[word] = len(word_to_index)
+
+index_to_word = dict([(word_to_index[word],word) for word in word_to_index])
+            
+VOCAB_SIZE = len(word_to_index)
+
 
 # %%
 print("       Vocabulary Indices")
@@ -93,6 +98,20 @@ print("Number of unique words:", len(word_to_index))
 # **Embedding layer input and output**. An embedding layer takes an index and return a matrix.
 
 # %%
+def encode_onehot(words,mapping):
+    encoded = torch.zeros((len(words),VOCAB_SIZE))
+    for i in range(len(words)):
+        word = words[i]
+        encoded[i,mapping[word]] = 1
+    return encoded
+
+
+# %%
+def decode_onehot(encoded):
+    return ''.join(map(str,([index_to_word[idx] for idx in np.where(encoded==1)[1]])))
+
+
+# %%
 def convert_to_index_tensor(words, mapping):
     indices = [mapping[w] for w in words]
     return torch.tensor(indices, dtype=torch.long)
@@ -105,9 +124,10 @@ embed_layer = torch.nn.Embedding(vocab_size, embed_dim)
 
 # %%
 # i = torch.tensor([word_to_index["the"], word_to_index["dog"]])
-indices = convert_to_index_tensor(ps("15 + (7 + -17)"), word_to_index)
-embed_output = embed_layer(indices)
-indices.shape, embed_output.shape, embed_output
+indices = encode_onehot(ps("15 + (7 + -17)"), word_to_index)
+#embed_output = embed_layer(indices)
+#indices.shape, embed_output.shape, embed_output
+indices.shape
 
 # %% [markdown]
 # ## Adding an LSTM layer
@@ -125,15 +145,16 @@ indices.shape, embed_output.shape, embed_output
 # %%
 hidden_dim = 10  # Hyperparameter
 num_layers = 5  # Hyperparameter
-lstm_layer = torch.nn.LSTM(embed_dim, hidden_dim, num_layers=num_layers)
+lstm_layer = torch.nn.LSTM(VOCAB_SIZE, hidden_dim, num_layers=num_layers)
 
 # %%
 # The LSTM layer expects the input to be in the shape (L, N, E)
 #   L is the length of the sequence
 #   N is the batch size (we'll stick with 1 here)
 #   E is the size of the embedding
-lstm_output, _ = lstm_layer(embed_output.unsqueeze(1))
+lstm_output, _ = lstm_layer(indices.unsqueeze(1))
 lstm_output.shape
+lstm_output
 
 # %% [markdown]
 # ## Classifiying the LSTM output
