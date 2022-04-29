@@ -34,6 +34,16 @@ To train the seq2seq model on batches, we had to specify a certain length both f
 
 We tried several configurations of our model for this task. The base model we built was an LSTM layer connected to a Linear Layer that produced a single integer output.  We first tried this model to solve problems in the arithmetic module. In our first training setup, we used stochastic gradient descent with MSE as our loss function. The initial hyparameters and setup of our network is given as a table below
 
+Accuracy
+
+| Size of data set/ (n, m)   | (20,5) | (30,10) |
+| :---:                      | :---:  | :---:   |  
+| 1000                       |        |         |
+| 5000                       |        |         |
+| 10000                      |        |         |
+
+
+
 | Hyperparameters                              |         Setup                          |
 | :---:                                        | :---:                                  |
 | X hidden states for LSTM,                    |    X optimization function             |
