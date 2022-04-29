@@ -22,18 +22,13 @@ After completing our research and training our model, we hope to be able to get 
 
 ## Methods
 
-#### Prepare the Dataset
-* We will use a [dataset](https://github.com/deepmind/mathematics_dataset) containing millions of problem solution pairs for different math modules. We will start by training our NN on one simple module (Arithmetic) then on other more difficult modules.
+As we mentioned earlier, we use the [dataset](https://github.com/deepmind/mathematics_dataset) containing millions of problem solution pairs for different math modules. We are using the `tensorflow` library for our NN models in addition to `scikit` for some helpful methods during training. We trained our model on one simple module (Arithmetic). Our model is a seq2seq neural network that is composed of the following layers
 
-#### Create embeddings
-* Create and save embeddings for our NN to read the data.
+`Embedding -> Encoder LSTM -> RepeatVector -> Decoder LSTM -> Fully Connected -> Softmax` 
 
-#### Train the Neural Network
-* Create an LSTM Layer to train the model. 
-* Train the model on multiple math modules.
+If we let `n,m` be the length of a given (problem, solution) pair in terms of number of characters in each of them, and let `v` be the number of unique characters in our dataset. The seq2seq model takes in a `n x 1` vector representing the characters in the problem(with indices according to a vocabulary), and outputs a `m x v` matrix where each row is represnting a probability distribution over the vocabulary indices for each character of the answer. Then, these rows representing probability distributions over the vocabularity for each character of the answer can be one-hot decoded to actual letters. 
 
-#### Optimization
-* Look into optimization techniques e.g. Adam to improve accuracy
+To train the seq2seq model on batches, we had to specify a certain length both for the input sequence(question) and the output sequence(answer). So, we chose (20,5) and (30,10) as two pairs of maximum lengths for questions and answers, which meant that we only trained and tested our models on a subset of the original dataset. To make all questions and answers the same length, we added right-padding to complete the questions and answers to the specified length. This meant, for example, that we had quite many empty pad characters added to the end of many questions and answers. Essentially, this posed a challenge for us, since we had to "tell" the NN to ignore these as meaningless characters. This was achieved by adding the "mask_zero=True" option to the embedding layer. 
 
 ## Discussion
 
@@ -61,7 +56,9 @@ When trained on all modules in the data set, our model performed with an overall
 
 ## Ethical Sweep
 
-The model that we will be training may be used for good purposes, such as checking automatically if a student got the right answer in a question. If our model or future work can find solutions to problems that are not easily solvable by humans, it might lead to further discussions about the nature of some problems.  
+The model that we will be training may be used for good purposes, such as checking automatically if a student got the right answer in a question. However, our peers whom we were doing peer reviews with also suggested the dual usage of this work, and questioned if this kind of module could also be abused by students for cheating. As our model currently is fairly simple and is only able to solve arithmetic problems, and only ones that do not have many words in them, we believe that our models do not currently pose such a threat. In addition, our models were not as accurate for validation tests, implying that the model's predictions are far from being reliable. However, thinking about the future of NN models capable of reasoning mathematically, this might be a valid concern.
+
+Some of our peers also pointed out the question of what the philosophical implications of a mathematically reasoning computer would be for the field of math. So, if future work can find solutions to problems that are not easily solvable by humans, it might lead to further discussions about the nature of some problems. However, we believe that this is not much different from the question of whether complex NN models like the GPT can actually convince us that they are using languages as humans do. At the end of the day, even though a computer might look ilike it has algebraic reasoning, we would still question the relevance of this kind of "reasoning" to our own human reasoning.
 
 ## Referenced Works
 
