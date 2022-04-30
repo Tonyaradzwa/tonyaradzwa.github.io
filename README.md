@@ -32,7 +32,15 @@ To train the seq2seq model on batches, we had to specify a certain length both f
 
 ## Discussion
 
-We tried several configurations of our model for this task. The base model we built was an LSTM layer connected to a Linear Layer that produced a single integer output.  We first tried this model to solve problems in the arithmetic module. In our first training setup, we used stochastic gradient descent with MSE as our loss function. The initial hyparameters and setup of our network is given as a table below
+We tried several configurations of our model for this task. The base model we built was an LSTM layer connected to a Linear Layer that produced a single integer output.  We first tried this model to solve problems in the arithmetic module. In our first training setup, we used stochastic gradient descent with MSE as our loss function. The initial hyperparameters and setup of our network is given as a table below
+
+| Hyperparameters        |      |        
+| :---:                  |:---: |
+| Batch size             | 128  |         
+| Number of epochs       | 100  |
+| Embedding dimension    | 30   |
+| Loss Function          | Cross Entropy Loss |
+| Optimization function  | Adam |
 
 ### Accuracy Plots
 #### Accuracy for (20,5)
@@ -47,19 +55,9 @@ We tried several configurations of our model for this task. The base model we bu
 | 10000                      | 67%, 78% |         |
 
 
-| Hyperparameters                              |         Setup                          |
-| :---:                                        | :---:                                  |
-| X hidden states for LSTM,                    |    X optimization function             |
-| X connected layers                           |    SGD                                 |
-| 0.X learning rate                            |    MSE Loss                            |
-
 This didn't give us desired results, so we tried training our model on different hyper parameters and optimization functions. The highest accuracy achieved in this module (X%) was obtained with the following combination of hyperparameters and setup: 
 
-| Hyperparameters                              |         Setup                          |
-| :---:                                        | :---:                                  |
-| X hidden states for LSTM,                    |    X optimization function             |
-| X connected layers                           |    X descent function                  |
-| 0.X learning rate                            |    X Loss function                     |
+
 
 These results are not surprising, since we expected accuracy to increase as we increased X,Y,Z and decreased X,Y,Z because we have seen in our initial configuration that X.  
 
