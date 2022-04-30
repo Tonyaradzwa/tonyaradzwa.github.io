@@ -22,7 +22,7 @@ After completing our research and training our model, we hope to be able to get 
 
 ## Methods
 
-As we mentioned earlier, we use the [dataset](https://github.com/deepmind/mathematics_dataset) containing millions of problem solution pairs for different math modules. We are using the `tensorflow` library for our NN models in addition to `scikit` for some helpful methods during training. We trained our model on one simple module (Arithmetic). Our model is a seq2seq neural network that is composed of the following layers
+As we mentioned earlier, we use the [dataset](https://github.com/deepmind/mathematics_dataset) containing millions of problem solution pairs for different math modules. We are using the `tensorflow` library for our NN models in addition to `scikit` for some helpful methods during training. We trained our model on one simple module, Arithmetic, containing multiple operations (addition, subtraction, division, multiplication) as well as parentheses. Our model is a seq2seq neural network that is composed of the following layers
 
 `Embedding -> Encoder LSTM -> RepeatVector -> Decoder LSTM -> Fully Connected -> Softmax` 
 
@@ -42,9 +42,9 @@ We tried several configurations of our model for this task. Each configuration v
 | Loss Function          | Cross Entropy Loss |
 | Optimization function  | Adam |
 
-### Accuracy Plots
+### Accuracy
 
-The model performed fairly well with a high training accuracy (86% and 92%) for the (20,5) maximum length configuration. This set up, however, exhibited overfitting as seen in the lower validation accuracies (67% and 78%). The (30,10), on the other hand, the model did not overfit and performed much better. The final training accuracies were 89% and 95% and final validation accuracies were 85% and 90% respectively. This major difference in accuracy is not surprising, since we expect the model to be better at memorizing the problem-solution data containing a smaller number of characters.
+The model performed fairly well on the Arithmetic module with a high training accuracy (86% and 92%) for the (20,5) maximum length configuration. This set up, however, exhibited overfitting as seen in the lower validation accuracies (67% and 78% respectively). On the other hand, increasing the training data to (30,10) configurations resulted in a much better performance. The final training accuracies were 89% and 95% and final validation accuracies were 85% and 90% respectively. This major difference in accuracy is not surprising, since we expected the model to be better at memorizing the problem-solution data containing a smaller number of characters. We also expected that allowing for longer inputs would require more intermediate calculations due to the greater likelihood of the presence of parentheses (Saxton et al., 8). This would in turn make it difficult for the model to memorize the data set, and hence the decrease of overfitting in the (30,10) configuration.
 
 #### Accuracy for (20,5)
 ![](images/acc/trial_0_acc.png)
@@ -77,6 +77,6 @@ Some of our peers also pointed out the question of what the philosophical implic
 [**Using neural networks to solve advanced mathematics equations**](https://ai.facebook.com/blog/using-neural-networks-to-solve-advanced-mathematics-equations/)
 (Facebook AI Blog)
 
-[**ANALYSING MATHEMATICAL REASONING ABILITIES OF NEURAL MODELS**](https://openreview.net/pdf?id=H1gR5iR5FX) (David Saxton et al.. 2019)
+[**Analysing Mathematical Reasoning Abilities of Neural Models**](https://openreview.net/pdf?id=H1gR5iR5FX) (David Saxton et al. 2019)
 
 [**Solving Math Equations with Neural Networks**](https://ai.plainenglish.io/solving-math-equations-with-neural-networks-f015351995e8)(Blog post)
