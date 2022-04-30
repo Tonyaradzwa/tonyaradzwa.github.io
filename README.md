@@ -26,13 +26,13 @@ As we mentioned earlier, we use the [dataset](https://github.com/deepmind/mathem
 
 `Embedding -> Encoder LSTM -> RepeatVector -> Decoder LSTM -> Fully Connected -> Softmax` 
 
-If we let `n,m` be the length of a given (problem, solution) pair in terms of number of characters in each of them, and let `v` be the number of unique characters in our dataset. The seq2seq model takes in a `n x 1` vector representing the characters in the problem(with indices according to a vocabulary), and outputs a `m x v` matrix where each row is represnting a probability distribution over the vocabulary indices for each character of the answer. Then, these rows representing probability distributions over the vocabularity for each character of the answer can be one-hot decoded to actual letters. 
+If we let `n,m` be the maximum length of a given (problem, solution) pair in terms of number of characters in each of them, and let `v` be the number of unique characters in our dataset. The seq2seq model takes in a `n x 1` vector representing the characters in the problem(with indices according to a vocabulary), and outputs a `m x v` matrix where each row is represnting a probability distribution over the vocabulary indices for each character of the answer. Then, these rows representing probability distributions over the vocabularity for each character of the answer can be one-hot decoded to actual letters. 
 
 To train the seq2seq model on batches, we had to specify a certain length both for the input sequence(question) and the output sequence(answer). So, we chose (20,5) and (30,10) as two pairs of maximum lengths for questions and answers, which meant that we only trained and tested our models on a subset of the original dataset. To make all questions and answers the same length, we added right-padding to complete the questions and answers to the specified length. This meant, for example, that we had quite many empty pad characters added to the end of many questions and answers. Essentially, this posed a challenge for us, since we had to "tell" the NN to ignore these as meaningless characters. This was achieved by adding the "mask_zero=True" option to the embedding layer. 
 
 ## Discussion
 
-We tried several configurations of our model for this task. The base model we built was an LSTM layer connected to a Linear Layer that produced a single integer output.  We first tried this model to solve problems in the arithmetic module. In our first training setup, we used stochastic gradient descent with MSE as our loss function. The initial hyperparameters and setup of our network is given as a table below
+We tried several configurations of our model for this task. Each configuration varied in the maximum length of the question (n) and in the maximum length in of the answer (m) and each (n,m) configuration had two trials. The rest of the hyperparameters remained fixed and are given in the table below. 
 
 | Hyperparameters        |      |        
 | :---:                  |:---: |
@@ -43,27 +43,23 @@ We tried several configurations of our model for this task. The base model we bu
 | Optimization function  | Adam |
 
 ### Accuracy Plots
+
+The model performed fairly well with a high training accuracy (86% and 92%) for the (20,5) maximum length configuration. This set up, however, exhibited overfitting as seen in the lower validation accuracies (67% and 78%). The (30,10), on the other hand, the model did not overfit and performed much better. The final training accuracies were 89% and 95% and final validation accuracies were 85% and 90% respectively. This major difference in accuracy is not surprising, since we expect the model to be better at memorizing the problem-solution data containing a smaller number of characters.
+
 #### Accuracy for (20,5)
 ![](images/acc/trial_0_acc.png)
 ![](images/acc/trial_1_acc.png)
 
-### Final Valid Accuracy (%)
+#### Accuracy for (30,10)
+![](images/acc/trial_2_acc.png)
+![](images/acc/trial_3_acc.png)
+
+### Final Validatiion Accuracy (%)
 | Size of data set/ (n, m)   | (20,5)   | (30,10) |
 | :---:                      | :---:    | :---:   |  
 | 1000                       |          |         |
 | 5000                       |          |         |
-| 10000                      | 67%, 78% |         |
-
-
-This didn't give us desired results, so we tried training our model on different hyper parameters and optimization functions. The highest accuracy achieved in this module (X%) was obtained with the following combination of hyperparameters and setup: 
-
-
-
-These results are not surprising, since we expected accuracy to increase as we increased X,Y,Z and decreased X,Y,Z because we have seen in our initial configuration that X.  
-
-Then, we tried our best model in other modules. For example, we got the lowest accuracy in the Probability module (X%). This might be becuase Probability questions exhibit X in contrast to arithmetic questions.  
-
-When trained on all modules in the data set, our model performed with an overall accuracy of (X%). Overall, our model performed relatively well, and was slightly lower than Saxton et al. (X%). 
+| 10000                      | 67%, 78% | 85%, 93%|
 
 ## Ethical Implications
 
