@@ -91,14 +91,14 @@ After getting these results, we tried our chance with the q,a length pair (30,10
 Note that at this time, we implemented an early stopping callback for the model to stop training when we haven't seen an improvement in valid loss for 7 epochs. This enabled us to test faster. We were able to achieve a validation accuracy of ~84%. The "actual" accuracy of the predictions matching the expected answer exactly was 23% this time, which means that the increase in the size of the training set overcompansates for extra added pad characters. Our next natural step was to increase the size of the data for the (30,10) questions, so we did that and got the following results:
 
 #### (30,10) with 0.5 of eligible data
-![](scripts/figs/acc/trial_6_acc.png)
-![](scripts/figs/loss/trial_6_loss.png)
+![](scripts/figs/acc/trial_3_acc.png)
+![](scripts/figs/loss/trial_3_loss.png)
 
 We had exactly 244,596 sample question and answer pairs this time, which shows how much our model's performance is dependant on the size of the dataset. We were satisfied with how much performance increase we got from the starting point. We then tried increasing the number of the encoder hidden states to see if that would have an effect on the performance for the last set of training samples. Here was our result:
 
 #### (30,10) with 0.5 of eligible data with 256 hidden states for encoder layer
-![](scripts/figs/acc/trial_7_acc.png)
-![](scripts/figs/loss/trial_7_loss.png)
+![](scripts/figs/acc/trial_6_acc.png)
+![](scripts/figs/loss/trial_6_loss.png)
 
 So, we see a small percentage increase in accuracy. For this setup, our "true accuracy" rate for the validation set was actually 66.9%, which is such an improvement from the previous numbers! This really took home the point that increasing the number of samples is the way to improve the model in our particular scenario. Below, we present a couple of the (answer, expected and prediction) tuples from our last and best model:
 
